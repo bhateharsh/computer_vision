@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Code to quantize RGB image using k-means clustering"""
+"""Code to quantize HSV image using k-means clustering"""
 
 # Importing Modules
 import imageio
@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.cluster.vq import kmeans2
 from skimage import img_as_ubyte as convertToInt
+from skimage.color import rgb2hsv as convertToHSV
+from skimage.color import hsv2rgb as convertToRGB
+
 
 # Authorship Information
 __author__ = "Harsh Bhate"
@@ -38,9 +41,9 @@ def view_image(im):
     # Display plot
     plt.show()
 
-# QuantizedRGB Function
-def quantizeRGB(origImg, k):
-    """Quantizes image in the 3D RGB space using k-means clustering
+# QuantizedHSV Function
+def quantizeHSV(origImg, k):
+    """Quantizes image in the 3D HSV space using k-means clustering
     Parameters
     ----------
     origImg : array_like (np.uint8)
@@ -50,43 +53,48 @@ def quantizeRGB(origImg, k):
     Returns
     -------
     outputImg : array_like (np.uint8)
-        Quantized image of shape 
+        Quantized image of shape M * N * 3 in RGB
     meanColors : array_like
         Array containing location of the k centers (k*3)
     """
     # Extracting the shape information for the image
     h, w, c = origImg.shape
-    # Converting image to float
-    origImg = np.array(origImg, dtype=np.float64)/255
     # Running sanity check
     assert c == 3, "Image is not color!"
+    # Converting image to hsv
+    hsvImg = convertToHSV(origImg)
+    print (hsvImg.dtype)
+    hueImg = hsvImg[:, :, 0]
+    satImg = hsvImg[:, :, 1]
+    valImg = hsvImg[:, :, 2]
     # Generating a pixel matrix (reshaped image)
-    pixelImg = np.reshape(origImg, (-1, c))
+    pixelImg = np.reshape(hueImg, (-1, 1))
     # Performing k-means clustering
     meanColors, pixelLabel = kmeans2(pixelImg, k)
     # Reshaping to get quantized image back
-    quantizedImg = np.zeros((h,w,c))
+    quantizedImg = np.zeros((h,w))
     labelID = 0
     for i in range(h):
         for j in range(w):
             quantizedImg[i][j] = meanColors[pixelLabel[labelID]]
             labelID += 1
-    # Renormalizing
-    outputImg = convertToInt(quantizedImg) 
+    # Adding to the colorspace
+    outputHSV = np.dstack((quantizedImg, satImg, valImg))
+    outputImg = convertToInt(convertToRGB(outputHSV))
     return [outputImg, meanColors]
 
 # Test
-def test_quantizeRGB():
-    """Function to test quantizeRGB
+def test_quantizeHSV():
+    """Function to test quantizeHSV
     """
     # Toggle comments to choose test image
-    image_path = "testImages/testImage1.png"
+    # image_path = "testImages/testImage1.png"
     # image_path = "testImages/testImage2.jpg"
     # Read Image
     im = imageio.imread(image_path)
     # Qunatize Image
     k = 20
-    outputImg, meanColors = quantizeRGB(im, k)
+    outputImg, meanColors = quantizeHSV(im, k)
     # Generate output and report
     view_image(outputImg)
     print ("REPORT")
@@ -103,4 +111,4 @@ def test_quantizeRGB():
 # Comment if test is not required
 # Main
 if __name__=="__main__":
-    test_quantizeRGB();
+    test_quantizeHSV();
