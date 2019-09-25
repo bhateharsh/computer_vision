@@ -70,18 +70,19 @@ def quantizeHSV(origImg, k):
     # Generating a pixel matrix (reshaped image)
     pixelImg = np.reshape(hueImg, (-1, 1))
     # Performing k-means clustering
-    meanColors, pixelLabel = kmeans2(pixelImg, k)
+    meanHues, pixelLabel = kmeans2(pixelImg, k)
     # Reshaping to get quantized image back
     quantizedImg = np.zeros((h,w))
     labelID = 0
     for i in range(h):
         for j in range(w):
-            quantizedImg[i][j] = meanColors[pixelLabel[labelID]]
+            quantizedImg[i][j] = meanHues[pixelLabel[labelID]]
             labelID += 1
     # Adding to the colorspace
+    print (hist)
     outputHSV = np.dstack((quantizedImg, satImg, valImg))
     outputImg = convertToInt(convertToRGB(outputHSV))
-    return [outputImg, meanColors]
+    return [outputImg, meanHues]
 
 # Test
 def test_quantizeHSV():
