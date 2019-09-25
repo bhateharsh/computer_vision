@@ -63,7 +63,6 @@ def quantizeHSV(origImg, k):
     assert c == 3, "Image is not color!"
     # Converting image to hsv
     hsvImg = convertToHSV(origImg)
-    print (hsvImg.dtype)
     hueImg = hsvImg[:, :, 0]
     satImg = hsvImg[:, :, 1]
     valImg = hsvImg[:, :, 2]
@@ -79,7 +78,6 @@ def quantizeHSV(origImg, k):
             quantizedImg[i][j] = meanHues[pixelLabel[labelID]]
             labelID += 1
     # Adding to the colorspace
-    print (hist)
     outputHSV = np.dstack((quantizedImg, satImg, valImg))
     outputImg = convertToInt(convertToRGB(outputHSV))
     return [outputImg, meanHues]
