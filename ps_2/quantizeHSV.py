@@ -87,13 +87,13 @@ def test_quantizeHSV():
     """Function to test quantizeHSV
     """
     # Toggle comments to choose test image
-    # image_path = "testImages/testImage1.png"
+    image_path = "fish.jpg"
     # image_path = "testImages/testImage2.jpg"
     # Read Image
     im = imageio.imread(image_path)
     # Qunatize Image
-    k = 20
-    outputImg, meanColors = quantizeHSV(im, k)
+    k = 4
+    outputImg, meanColors = quantizeHSV(im, k, iter=25)
     # Generate output and report
     view_image(outputImg)
     print ("REPORT")

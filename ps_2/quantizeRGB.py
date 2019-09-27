@@ -63,7 +63,7 @@ def quantizeRGB(origImg, k):
     # Generating a pixel matrix (reshaped image)
     pixelImg = np.reshape(origImg, (-1, c))
     # Performing k-means clustering
-    meanColors, pixelLabel = kmeans2(pixelImg, k)
+    meanColors, pixelLabel = kmeans2(pixelImg, k, iter=25)
     # Reshaping to get quantized image back
     quantizedImg = np.zeros((h,w,c))
     labelID = 0

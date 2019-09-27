@@ -32,7 +32,7 @@ plt.rc('font', **font)
 origImg = imageio.imread("fish.jpg")
 
 # Quantizing for low k values, k = 5
-k = 50
+k = 5
 print ("Computing Quantized Images for k = %d"%(k))
 
 # Computing quantizations
@@ -64,7 +64,7 @@ axs[1].set_title(r'\small RGB Quantized Image$(e= %.2f)$'%(errorRGB))
 axs[2].imshow(outputHSV)
 axs[2].set_title(r'\small HSV Quantized Image $(e = %.2f)$'%(errorHSV))
 # Labels
-fig1.suptitle(r'\textbf{Quantization Output} $(k=50)$')
+fig1.suptitle(r'\textbf{Quantization Output} $(k=5)$')
 # Display plot
 fig1.tight_layout()
 fig1.show()
