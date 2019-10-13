@@ -36,12 +36,16 @@ def recordClick(event):
     return logCoords
 
 def plotAndLog(filename):
-    #     """Function to plot and log image
-    #     Parameters
-    #     ----------
-    #     filename : str
-    #         Name of the image file to display
-    #     """
+    """Function to plot and log image
+    Parameters
+    ----------
+    filename : str
+        Name of the image file to display
+    Returns
+    -------
+    clickCoords : array_like
+        A 2xN numpy array corresponding to N clicks
+    """
     # Settings for LaTeX rendering
     # Please comment if your system does not have a native 
     # LaTeX rendering software
@@ -61,14 +65,21 @@ def plotAndLog(filename):
     cid = fig.canvas.mpl_connect('button_press_event', recordClick)
     # Show
     plt.show()
+    # Convert Cords into x,y coords
+    x, y = zip(*logCoords)
+    # Clear logCoords
+    logCoords.clear()
+    # Return Coordinates
+    return np.array([x,y])
 
+# Comment from here for deployment
 # Test function
-def test_plotAndLog():
-    """Function to test plot and log"""
-    filename = "testImage.png"
-    plotAndLog(filename)
-    print ("Length of coords: %d"%(len(logCoords)))
+# def test_plotAndLog():
+#     """Function to test plot and log"""
+#     filename = "testImage.png"
+#     plotAndLog(filename)
+#     print ("Length of coords: %d"%(len(logCoords)))
 
-# Main
-if __name__=="__main__":
-    test_plotAndLog()
+# # Main
+# if __name__=="__main__":
+#     test_plotAndLog()
