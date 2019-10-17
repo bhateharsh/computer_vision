@@ -28,8 +28,9 @@ def recordClick(event):
     iX = event.xdata
     iY =  event.ydata
     logCoords.append((iX,iY))
-    print ("(x: %d, y: %d)"%(iX,iY))
-    plt.plot(iX,iY, 'gx')
+    # Uncomment to see mouse click points on screen
+    # print ("(x: %d, y: %d)"%(iX,iY))
+    plt.plot(iX,iY, 'rx')
     plt.draw()
     if (len(logCoords) == 25):
         fig.canvas.mpl_disconnect(cid)
@@ -74,12 +75,12 @@ def plotAndLog(filename):
 
 # Comment from here for deployment
 # Test function
-# def test_plotAndLog():
-#     """Function to test plot and log"""
-#     filename = "testImage.png"
-#     plotAndLog(filename)
-#     print ("Length of coords: %d"%(len(logCoords)))
+def test_plotAndLog():
+    """Function to test plot and log"""
+    filename = "testImage.png"
+    plotAndLog(filename)
+    print ("Length of coords: %d"%(len(logCoords)))
 
-# # Main
-# if __name__=="__main__":
-#     test_plotAndLog()
+# Main
+if __name__=="__main__":
+    test_plotAndLog()
